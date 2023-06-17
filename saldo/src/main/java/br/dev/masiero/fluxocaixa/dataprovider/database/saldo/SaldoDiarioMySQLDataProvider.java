@@ -85,7 +85,8 @@ public class SaldoDiarioMySQLDataProvider implements SaldoDiarioDataProvider {
 
 	@Override
 	public List<SaldoDiario> recuperarTodosDesde(LocalDate data) {
-		return this.saldoDiarioJpaRepository.findByDataGreaterThanEqualOrderByDataAsc(data);
+		List<SaldoDiarioJpa> listaJpa = this.saldoDiarioJpaRepository.findByDataGreaterThanEqualOrderByDataAsc(data);
+		return SALDO_MAPPER.fromSaldoDiarioJpa(listaJpa);
 	}
 
 	@Override
@@ -96,8 +97,13 @@ public class SaldoDiarioMySQLDataProvider implements SaldoDiarioDataProvider {
 	
 	@Override
 	public BigDecimal buscarSaldoDataAnterior(LocalDate dataNotificacao) {
-		//TODO implementar
-		return new BigDecimal("0");
+		SaldoDiarioJpa saldoDiario = this.saldoDiarioJpaRepository.findFirstByDataLessThanOrderByDataDesc(dataNotificacao);
+
+		if (saldoDiario == null) {
+			return BigDecimal.ZERO;
+		}
+
+		return saldoDiario.getValor();
 	}
 
 
