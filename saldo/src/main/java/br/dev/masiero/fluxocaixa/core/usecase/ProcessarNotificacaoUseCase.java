@@ -8,37 +8,43 @@ import java.util.List;
 import br.dev.masiero.fluxocaixa.core.dataprovider.SaldoDiarioDataProvider;
 import br.dev.masiero.fluxocaixa.core.entity.Notificacao;
 import br.dev.masiero.fluxocaixa.core.entity.SaldoDiario;
+import br.dev.masiero.fluxocaixa.core.entity.Notificacao.TipoNotificacao;
 
 public class ProcessarNotificacaoUseCase {
 
 	private SaldoDiarioDataProvider saldoDiarioDataProvider;
 
+	public ProcessarNotificacaoUseCase(SaldoDiarioDataProvider saldoDiarioDataProvider) {
+		this.saldoDiarioDataProvider = saldoDiarioDataProvider;
+	}
+
 	public void processar(Notificacao notificacao) {
 
-		LocalDate data = notificacao.getLancamentoOriginal().getData();
+		LocalDate dataNotificacao = notificacao.getLancamentoOriginal().getData();
 		BigDecimal valorAjuste = notificacao.getLancamentoOriginal().getValor();
 
-		if (Notificacao.TipoNotificacao.ALTERACAO == notificacao.getTipo()) {
-			valorAjuste = notificacao.getLancamentoAlterado().getValor()
-					.min(notificacao.getLancamentoOriginal().getValor());
-		} else if (Notificacao.TipoNotificacao.EXCLUSAO == notificacao.getTipo()) {
-			valorAjuste = valorAjuste.min(new BigDecimal("-1"));
+		if (TipoNotificacao.EXCLUSAO == notificacao.getTipo()) {
+			valorAjuste = valorAjuste.multiply(new BigDecimal("-1"));
+		} else if (TipoNotificacao.ALTERACAO == notificacao.getTipo()) {
+			valorAjuste = notificacao.getLancamentoAlterado().getValor().subtract(notificacao.getLancamentoOriginal().getValor());
 		}
-
-		List<SaldoDiario> saldoDiarioList = saldoDiarioDataProvider.recuperarTodosDesde(data);
+		
+		List<SaldoDiario> saldoDiarioList = saldoDiarioDataProvider.recuperarTodosDesde(dataNotificacao);
 
 		List<SaldoDiario> saldoDiarioListAtualizada = new ArrayList<>();
 
 		if (saldoDiarioList != null && !saldoDiarioList.isEmpty()) {
 
-			if (!data.equals(saldoDiarioList.get(0).getData())) {
-				// precisa obter o saldo da ultima data anterior para fazer o calculo
+			if (!dataNotificacao.equals(saldoDiarioList.get(0).getData())) {
+				BigDecimal ultimoSaldo = saldoDiarioDataProvider.buscarSaldoDataAnterior(dataNotificacao);
 				
-				SaldoDiario saldo = SaldoDiario.builder().data(data).valor(valorAjuste).build();
+				SaldoDiario saldoInclusao = SaldoDiario.builder()
+						.data(dataNotificacao)
+						.valor(ultimoSaldo.add(valorAjuste)).build();
 
-				saldoDiarioListAtualizada.add(saldo);
+				saldoDiarioListAtualizada.add(saldoInclusao);
 			}
-
+			
 			for (SaldoDiario saldo : saldoDiarioList) {
 				saldo.setValor(saldo.getValor().add(valorAjuste));
 				saldoDiarioListAtualizada.add(saldo);
@@ -49,5 +55,5 @@ public class ProcessarNotificacaoUseCase {
 		saldoDiarioDataProvider.atualizar(saldoDiarioListAtualizada);
 
 	}
-
+	
 }

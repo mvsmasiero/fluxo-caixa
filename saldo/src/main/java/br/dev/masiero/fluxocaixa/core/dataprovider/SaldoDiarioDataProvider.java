@@ -1,5 +1,6 @@
 package br.dev.masiero.fluxocaixa.core.dataprovider;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface SaldoDiarioDataProvider {
 	public List<SaldoDiario> recuperarTodosDesde(LocalDate data);
 	
 	public void atualizar(List<SaldoDiario> saldoDiarioList);
+
+	public BigDecimal buscarSaldoDataAnterior(LocalDate dataNotificacao);
 }

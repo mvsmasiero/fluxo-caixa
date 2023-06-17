@@ -1,5 +1,6 @@
 package br.dev.masiero.fluxocaixa.dataprovider.database.saldo;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -92,5 +93,12 @@ public class SaldoDiarioMySQLDataProvider implements SaldoDiarioDataProvider {
 		List<SaldoDiarioJpa> saldoDiarioJpaList = SALDO_MAPPER.toSaldoDiarioJpa(saldoDiarioList);
 		this.saldoDiarioJpaRepository.saveAll(saldoDiarioJpaList);
 	}
+	
+	@Override
+	public BigDecimal buscarSaldoDataAnterior(LocalDate dataNotificacao) {
+		//TODO implementar
+		return new BigDecimal("0");
+	}
+
 
 }
