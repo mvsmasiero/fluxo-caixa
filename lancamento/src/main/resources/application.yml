@@ -1,0 +1,22 @@
+spring:
+    datasource:
+        url:  jdbc:mysql://localhost:3306/teste-carrefour
+        username: root
+        password: carrefour123
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect             
+
+    kafka:
+      producer:
+        bootstrap-servers: 127.0.0.1:9092
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+        group-id: fluxo-caixa-group
+
+topic.name.producer: notificacao-lancamento
+auto.create.topics.enable: true
