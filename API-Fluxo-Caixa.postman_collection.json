@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "9b2be9ad-8c1d-4e61-bb94-af0abf0f7914",
+		"name": "API Fluxo Caixa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28053343"
+	},
+	"item": [
+		{
+			"name": "Incluir Lançamento",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": \"2023-06-03\",\n  \"descricao\": \"03-06 valor -80\",\n  \"valor\": -80\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_LANCAMENTO}}/v1/lancamento",
+					"host": [
+						"{{HOST_LANCAMENTO}}"
+					],
+					"path": [
+						"v1",
+						"lancamento"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar Lançamento",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 24,\n  \"data\": \"2023-06-03\",\n  \"descricao\": \"03-06 valor de -50 para -70\",\n  \"valor\": -70\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_LANCAMENTO}}/v1/lancamento",
+					"host": [
+						"{{HOST_LANCAMENTO}}"
+					],
+					"path": [
+						"v1",
+						"lancamento"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remover Lançamento",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{HOST_LANCAMENTO}}/v1/lancamento/23",
+					"host": [
+						"{{HOST_LANCAMENTO}}"
+					],
+					"path": [
+						"v1",
+						"lancamento",
+						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Lançamentos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": \"2023-06-01\",\n  \"descricao\": \"Teste 1\",\n  \"valor\": 20\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_LANCAMENTO}}/v1/lancamento?dataInicial=2023-06-03&dataFinal=2023-06-09&tipoOrdenacao=ASC&pagina=0&quantidadeRegistrosPagina=10",
+					"host": [
+						"{{HOST_LANCAMENTO}}"
+					],
+					"path": [
+						"v1",
+						"lancamento"
+					],
+					"query": [
+						{
+							"key": "dataInicial",
+							"value": "2023-06-03",
+							"description": "Formato YYYY-MM-DD"
+						},
+						{
+							"key": "dataFinal",
+							"value": "2023-06-09",
+							"description": "Formato YYYY-MM-DD"
+						},
+						{
+							"key": "campoOrdenacao",
+							"value": "data",
+							"description": "Por enquanto apenas \"data\"",
+							"disabled": true
+						},
+						{
+							"key": "tipoOrdenacao",
+							"value": "ASC",
+							"description": "Padrão é \"ASC\""
+						},
+						{
+							"key": "pagina",
+							"value": "0",
+							"description": "Página a ser exibida"
+						},
+						{
+							"key": "quantidadeRegistrosPagina",
+							"value": "10",
+							"description": "Quantidade de registros por página"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Saldo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": \"2023-06-01\",\n  \"descricao\": \"Teste 1\",\n  \"valor\": 20\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_SALDO}}/v1/saldo?dataInicial=2023-06-03&dataFinal=2023-06-07&tipoOrdenacao=ASC&pagina=0&quantidadeRegistrosPagina=20",
+					"host": [
+						"{{HOST_SALDO}}"
+					],
+					"path": [
+						"v1",
+						"saldo"
+					],
+					"query": [
+						{
+							"key": "dataInicial",
+							"value": "2023-06-03",
+							"description": "Formato YYYY-MM-DD"
+						},
+						{
+							"key": "dataFinal",
+							"value": "2023-06-07",
+							"description": "Formato YYYY-MM-DD"
+						},
+						{
+							"key": "tipoOrdenacao",
+							"value": "ASC",
+							"description": "Padrão é \"ASC\""
+						},
+						{
+							"key": "pagina",
+							"value": "0",
+							"description": "Página a ser exibida"
+						},
+						{
+							"key": "quantidadeRegistrosPagina",
+							"value": "20",
+							"description": "Quantidade de registros por página"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST_LANCAMENTO",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "HOST_SALDO",
+			"value": "http://localhost:8081",
+			"type": "string"
+		}
+	]
+}

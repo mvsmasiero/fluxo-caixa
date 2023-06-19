@@ -22,3 +22,7 @@ docker-compose up -d
 mvn spring-boot:run -f lancamento/pom.xml
 mvn spring-boot:run -f saldo/pom.xml
 ```
+
+**Collection Postman**
+
+O arquivo [API-Fluxo-Caixa.postman_collection.json](API-Fluxo-Caixa.postman_collection.json) contém a Collection das APIs para ser importado no Postman.
