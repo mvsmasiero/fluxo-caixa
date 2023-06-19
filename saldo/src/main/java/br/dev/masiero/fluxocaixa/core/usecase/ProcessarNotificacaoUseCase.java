@@ -36,13 +36,7 @@ public class ProcessarNotificacaoUseCase {
 		if (saldoDiarioList != null && !saldoDiarioList.isEmpty()) {
 
 			if (!dataNotificacao.equals(saldoDiarioList.get(0).getData())) {
-				BigDecimal ultimoSaldo = saldoDiarioDataProvider.buscarSaldoDataAnterior(dataNotificacao);
-				
-				SaldoDiario saldoInclusao = SaldoDiario.builder()
-						.data(dataNotificacao)
-						.valor(ultimoSaldo.add(valorAjuste)).build();
-
-				saldoDiarioListAtualizada.add(saldoInclusao);
+				gerarSaldoBaseadoSaldoAnterior(dataNotificacao, valorAjuste, saldoDiarioListAtualizada);
 			}
 			
 			for (SaldoDiario saldo : saldoDiarioList) {
@@ -50,10 +44,24 @@ public class ProcessarNotificacaoUseCase {
 				saldoDiarioListAtualizada.add(saldo);
 			}
 
+		} else {
+			gerarSaldoBaseadoSaldoAnterior(dataNotificacao, valorAjuste, saldoDiarioListAtualizada);
 		}
 
 		saldoDiarioDataProvider.atualizar(saldoDiarioListAtualizada);
 
+	}
+
+	private void gerarSaldoBaseadoSaldoAnterior(LocalDate dataNotificacao, BigDecimal valorAjuste,
+			List<SaldoDiario> saldoDiarioListAtualizada) {
+
+		BigDecimal ultimoSaldo = saldoDiarioDataProvider.buscarSaldoDataAnterior(dataNotificacao);
+		
+		SaldoDiario saldoInclusao = SaldoDiario.builder()
+				.data(dataNotificacao)
+				.valor(ultimoSaldo.add(valorAjuste)).build();
+
+		saldoDiarioListAtualizada.add(saldoInclusao);
 	}
 	
 }

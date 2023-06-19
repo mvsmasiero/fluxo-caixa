@@ -10,9 +10,9 @@ import org.springframework.data.domain.Sort;
 
 import br.dev.masiero.fluxocaixa.core.dataprovider.LancamentoDataProvider;
 import br.dev.masiero.fluxocaixa.core.entity.FiltroLancamento;
+import br.dev.masiero.fluxocaixa.core.entity.FiltroLancamento.TipoOrdenacao;
 import br.dev.masiero.fluxocaixa.core.entity.Lancamento;
 import br.dev.masiero.fluxocaixa.core.entity.Paginacao;
-import br.dev.masiero.fluxocaixa.core.entity.FiltroLancamento.TipoOrdenacao;
 import br.dev.masiero.fluxocaixa.dataprovider.database.lancamento.entity.LancamentoJpa;
 import br.dev.masiero.fluxocaixa.dataprovider.database.lancamento.entity.mapper.LancamentoJpaMapper;
 
@@ -63,9 +63,9 @@ public class LancamentoMySQLDataProvider implements LancamentoDataProvider {
 			sort = sort.descending();
 		}
 		
-		PageRequest.of(filtro.getPagina(), filtro.getQuantidadeRegistrosPagina(), sort);
-		Pageable pageable = Pageable.ofSize(filtro.getQuantidadeRegistrosPagina());
-		Page<LancamentoJpa> pageJpa = this.lancamentoJpaRepository.findAll(pageable);
+		Pageable pageable = PageRequest.of(filtro.getPagina(), filtro.getQuantidadeRegistrosPagina(), sort);
+		
+		Page<LancamentoJpa> pageJpa = this.lancamentoJpaRepository.queryByFilter(filtro.getDataInicial(), filtro.getDataFinal(), pageable);
 
 		return Paginacao.<Lancamento>builder()
 				.paginaAtual(pageJpa.getNumber())

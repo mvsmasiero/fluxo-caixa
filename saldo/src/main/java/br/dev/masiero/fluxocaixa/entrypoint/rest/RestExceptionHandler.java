@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -20,7 +21,7 @@ public class RestExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
 
-	@ExceptionHandler({ ValidacaoException.class })
+	@ExceptionHandler({ ValidacaoException.class, BindException.class })
 	public ResponseEntity<String> validacaoException(Exception ex) {
 		LOGGER.error("Erro na validacao dos dados", ex);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());

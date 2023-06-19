@@ -3,6 +3,7 @@ package br.dev.masiero.fluxocaixa.dataprovider.topic.notificacao;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.dev.masiero.fluxocaixa.core.dataprovider.NotificacaoDataProvider;
 import br.dev.masiero.fluxocaixa.core.entity.Notificacao;
@@ -10,7 +11,12 @@ import br.dev.masiero.fluxocaixa.core.exception.ErroSistemicoException;
 
 public class NotificacaoKafkaDataProvider implements NotificacaoDataProvider {
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER;
+	
+	static {
+		OBJECT_MAPPER = new ObjectMapper();
+		OBJECT_MAPPER.registerModule(new JavaTimeModule());
+	}
 	
 	private KafkaTemplate<String, String> kafkaTemplate;
 	private String topicName;

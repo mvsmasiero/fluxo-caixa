@@ -66,9 +66,8 @@ public class SaldoDiarioMySQLDataProvider implements SaldoDiarioDataProvider {
 			sort = sort.descending();
 		}
 		
-		PageRequest.of(filtro.getPagina(), filtro.getQuantidadeRegistrosPagina(), sort);
-		Pageable pageable = Pageable.ofSize(filtro.getQuantidadeRegistrosPagina());
-		Page<SaldoDiarioJpa> pageJpa = this.saldoDiarioJpaRepository.findAll(pageable);
+		Pageable pageable = PageRequest.of(filtro.getPagina(), filtro.getQuantidadeRegistrosPagina(), sort);
+		Page<SaldoDiarioJpa> pageJpa = this.saldoDiarioJpaRepository.queryByFilter(filtro.getDataInicial(), filtro.getDataFinal(), pageable);
 
 		return Paginacao.<SaldoDiario>builder()
 				.paginaAtual(pageJpa.getNumber())

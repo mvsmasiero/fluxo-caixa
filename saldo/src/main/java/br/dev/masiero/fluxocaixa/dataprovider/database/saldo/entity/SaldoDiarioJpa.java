@@ -6,14 +6,20 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
-@Entity(name = "SALDO_DIARIO")
+@Entity
+@Table(name = "SALDO_DIARIO")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SaldoDiarioJpa {
 
 	@Id
